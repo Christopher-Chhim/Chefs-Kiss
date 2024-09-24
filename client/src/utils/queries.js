@@ -78,10 +78,10 @@ export const QUERY_USER = gql`
   }
 `;
 
-export const QUERY_VOTES = gql`
-query getVotes($votes: ID)
+export const QUERY_KISSES = gql`
+query getKisses($kisses: ID)
 {
-  votes {
+  kisses {
   value
   }
 
