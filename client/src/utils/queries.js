@@ -18,7 +18,11 @@ export const QUERY_RECIPE = gql`
       text
       createdAt
     }
+<<<<<<< HEAD
     kisses {
+=======
+    votes {
+>>>>>>> main
       value
     }
     createdAt
