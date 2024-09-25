@@ -12,8 +12,8 @@ export const LOGIN = gql`
 `;
 
 export const POST_RECIPE = gql`
-  mutation postRecipe($products: [ID]!) {
-    postRecipe(products: $products) {
+  mutation postRecipe($recipes: [ID]!) {
+    postRecipe(recipes: $recipes) {
       _id
       title
       ingredients
@@ -30,9 +30,6 @@ export const POST_RECIPE = gql`
       createdAt
     }
     kisses {
-    votes {
-      value
-    }
     createdAt
     }
     }
