@@ -11,20 +11,27 @@ export const LOGIN = gql`
   }
 `;
 
-export const POST_ORDER = gql`
-  mutation addOrder($products: [ID]!) {
-    addOrder(products: $products) {
-      purchaseDate
-      products {
-        _id
-        name
-        description
-        price
-        quantity
-        category {
-          name
-        }
+export const POST_RECIPE = gql`
+  mutation postRecipe($recipes: [ID]!) {
+    postRecipe(recipes: $recipes) {
+      _id
+      title
+      ingredients
+      instructions
+      image
+      creator {
+        username
       }
+      comments {
+      user {
+        username
+      }
+      text
+      createdAt
+    }
+    kisses {
+    createdAt
+    }
     }
   }
 `;
