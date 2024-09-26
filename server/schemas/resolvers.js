@@ -1,135 +1,209 @@
-const { User, Product, Category, Order } = require('../models');
-const { signToken, AuthenticationError } = require('../utils/auth');
-const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { User, Recipe, Comment, Category } = require('../models');
 
 const resolvers = {
+
   Query: {
+   
     categories: async () => {
-      return await Category.find();
+      try {
+        return await Category.find();
+      } catch (err) {
+        throw new Error('Error fetching categories');
+      }
     },
-    products: async (parent, { category, name }) => {
-      const params = {};
 
+   
+    recipes: async (parent, { category, name }) => {
+      const query = {};
+
+  
       if (category) {
-        params.category = category;
+        query.category = category;
       }
 
+    
       if (name) {
-        params.name = {
-          $regex: name
-        };
+        query.title = { $regex: name, $options: 'i' };
       }
 
-      return await Product.find(params).populate('category');
-    },
-    product: async (parent, { _id }) => {
-      return await Product.findById(_id).populate('category');
-    },
-    user: async (parent, args, context) => {
-      if (context.user) {
-        const user = await User.findById(context.user._id).populate({
-          path: 'orders.products',
-          populate: 'category'
-        });
-
-        user.orders.sort((a, b) => b.purchaseDate - a.purchaseDate);
-
-        return user;
+      try {
+        return await Recipe.find(query).populate('category').populate('user');
+      } catch (err) {
+        throw new Error('Error fetching recipes');
       }
-
-      throw AuthenticationError;
     },
-    order: async (parent, { _id }, context) => {
-      if (context.user) {
-        const user = await User.findById(context.user._id).populate({
-          path: 'orders.products',
-          populate: 'category'
-        });
 
-        return user.orders.id(_id);
+ 
+    recipe: async (parent, { _id }) => {
+      try {
+        return await Recipe.findById(_id).populate('category').populate('user');
+      } catch (err) {
+        throw new Error('Recipe not found');
       }
-
-      throw AuthenticationError;
     },
-    checkout: async (parent, args, context) => {
-      const url = new URL(context.headers.referer).origin;
-      await Order.create({ products: args.products.map(({ _id }) => _id) });
-      const line_items = [];
 
-      // eslint-disable-next-line no-restricted-syntax
-      for (const product of args.products) {
-        // Create a line item for each product
-        line_items.push({
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: product.name,
-              description: product.description,
-              images: [`${url}/images/${product.image}`]
-            },
-            unit_amount: product.price * 100,
-          },
-          quantity: product.purchaseQuantity,
-        });
+    
+    user: async (parent, { _id }) => {
+      try {
+        return await User.findById(_id).populate('submittedRecipes');
+      } catch (err) {
+        throw new Error('User not found');
       }
-
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        line_items,
-        mode: 'payment',
-        success_url: `${url}/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${url}/`,
-      });
-
-      return { session: session.id };
     },
+
+    
+    searchRecipes: async (parent, { query }) => {
+      try {
+        const recipes = await Recipe.find({
+          $or: [
+            { title: { $regex: query, $options: 'i' } }, 
+            { ingredients: { $regex: query, $options: 'i' } } 
+        ]}).populate('category').populate('user');
+
+        return recipes;
+      } catch (err) {
+        throw new Error('Error searching for recipes');
+      }
+    }
   },
+
+ 
   Mutation: {
-    addUser: async (parent, args) => {
-      const user = await User.create(args);
-      const token = signToken(user);
+    
+    addUser: async (parent, { firstName, lastName, email, password }) => {
+      try {
+    
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-      return { token, user };
-    },
-    addOrder: async (parent, { products }, context) => {
-      if (context.user) {
-        const order = new Order({ products });
+        
+        const newUser = await User.create({
+          firstName,
+          lastName,
+          email,
+          password: hashedPassword,
+        });
 
-        await User.findByIdAndUpdate(context.user._id, { $push: { orders: order } });
+      
+        const token = jwt.sign({ _id: newUser._id }, 'your_secret_key');
 
-        return order;
+        return { token, user: newUser };
+      } catch (err) {
+        throw new Error('Error creating the user');
       }
-
-      throw AuthenticationError;
     },
-    updateUser: async (parent, args, context) => {
-      if (context.user) {
-        return await User.findByIdAndUpdate(context.user._id, args, { new: true });
-      }
 
-      throw AuthenticationError;
-    },
-    updateProduct: async (parent, { _id, quantity }) => {
-      const decrement = Math.abs(quantity) * -1;
-
-      return await Product.findByIdAndUpdate(_id, { $inc: { quantity: decrement } }, { new: true });
-    },
+   
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw AuthenticationError;
+        throw new Error('No user found with this email');
       }
 
-      const correctPw = await user.isCorrectPassword(password);
+      const validPassword = await bcrypt.compare(password, user.password);
 
-      if (!correctPw) {
-        throw AuthenticationError;
+      if (!validPassword) {
+        throw new Error('Incorrect password');
       }
 
-      const token = signToken(user);
+      const token = jwt.sign({ _id: user._id }, 'your_secret_key');
 
       return { token, user };
+    },
+
+  
+    submitRecipe: async (parent, { input }, { user }) => {
+      if (!user) {
+        throw new Error('You must be logged in to submit a recipe');
+      }
+
+      try {
+        const newRecipe = await Recipe.create({
+          title: input.title,
+          description: input.description,
+          ingredients: input.ingredients,
+          instructions: input.instructions,
+          photoUrl: input.photoUrl,
+          category: input.categoryId,
+          user: user._id,
+          createdAt: new Date(),
+        });
+
+        await User.findByIdAndUpdate(user._id, { $push: { submittedRecipes: newRecipe._id } });
+
+        return newRecipe;
+      } catch (err) {
+        throw new Error('Error submitting the recipe');
+      }
+    },
+
+   
+    addComment: async (parent, { recipeId, content }, { user }) => {
+      if (!user) {
+        throw new Error('You must be logged in to comment');
+      }
+
+      try {
+        const newComment = await Comment.create({
+          recipe: recipeId,
+          user: user._id,
+          content,
+          createdAt: new Date(),
+        });
+
+        return newComment;
+      } catch (err) {
+        throw new Error('Error adding the comment');
+      }
+    },
+
+
+    giveChefKiss: async (parent, { recipeId, userId }) => {
+      try {
+        const updatedRecipe = await Recipe.findByIdAndUpdate(
+          recipeId,
+          { $inc: { chefKissCount: 1 } },  
+          { new: true }
+        );
+
+        await User.findByIdAndUpdate(userId, { $inc: { chefKissCount: 1 } });
+
+        return updatedRecipe;
+      } catch (err) {
+        throw new Error('Error giving a Chef\'s Kiss');
+      }
+    },
+
+
+    updateRecipe: async (parent, { _id, title, description, ingredients, instructions, photoUrl }) => {
+      try {
+        const updatedRecipe = await Recipe.findByIdAndUpdate(
+          _id,
+          { title, description, ingredients, instructions, photoUrl },
+          { new: true }
+        );
+        
+        return updatedRecipe;
+      } catch (err) {
+        throw new Error('Error updating the recipe');
+      }
+    },
+
+   
+    updateUser: async (parent, { firstName, lastName, email, password, bio }, { user }) => {
+      if (!user) {
+        throw new Error('You must be logged in to update your profile');
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(
+        user._id,
+        { firstName, lastName, email, password, bio },
+        { new: true }
+      );
+
+      return updatedUser;
     }
   }
 };
