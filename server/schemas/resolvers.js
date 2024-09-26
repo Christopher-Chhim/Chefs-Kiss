@@ -60,7 +60,7 @@ const resolvers = {
           $or: [
             { title: { $regex: query, $options: 'i' } }, 
             { ingredients: { $regex: query, $options: 'i' } } 
-        }).populate('category').populate('user');
+        ]}).populate('category').populate('user');
 
         return recipes;
       } catch (err) {
