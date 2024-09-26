@@ -19,18 +19,8 @@ export const QUERY_RECIPE = gql`
       createdAt
     }
     kisses {
-    votes {
-      value
-    }
+    value
     createdAt
-    }
-  }
-`;
-
-export const QUERY_CHECKOUT = gql`
-  query getCheckout($products: [ProductInput]) {
-    checkout(products: $products) {
-      session
     }
   }
 `;
