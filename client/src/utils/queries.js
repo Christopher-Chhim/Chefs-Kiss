@@ -19,9 +19,7 @@ export const QUERY_RECIPE = gql`
       createdAt
     }
     kisses {
-    votes {
-      value
-    }
+    value
     createdAt
     }
   }
