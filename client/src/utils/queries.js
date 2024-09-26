@@ -25,14 +25,6 @@ export const QUERY_RECIPE = gql`
   }
 `;
 
-export const QUERY_CHECKOUT = gql`
-  query getCheckout($products: [ProductInput]) {
-    checkout(products: $products) {
-      session
-    }
-  }
-`;
-
 export const QUERY_COMMENTS = gql`
   query getComments($comments: ID)
   {
