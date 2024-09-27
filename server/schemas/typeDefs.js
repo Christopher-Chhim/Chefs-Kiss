@@ -1,66 +1,77 @@
-const typeDefs = `
+const { gql } = require('apollo-server-express');
+
+const typeDefs = gql`
   type Category {
-    _id: ID
-    name: String
+    _id: ID!
+    name: String!
   }
 
-  type Product {
-    _id: ID
-    name: String
+  type Recipe {
+    _id: ID!
+    title: String!
     description: String
-    image: String
-    quantity: Int
-    price: Float
+    ingredients: [String!]!
+    instructions: String!
+    photoUrl: String
+    chefKissCount: Int!
     category: Category
+    user: User!
+    createdAt: String!
   }
 
-  type Order {
-    _id: ID
-    purchaseDate: String
-    products: [Product]
+  type Comment {
+    _id: ID!
+    recipe: Recipe!
+    user: User!
+    content: String!
+    createdAt: String!
   }
 
   type User {
-    _id: ID
-    firstName: String
-    lastName: String
-    email: String
-    orders: [Order]
-  }
-
-  type Checkout {
-    session: ID
+    _id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    favourites: 
+    submittedRecipes: [Recipe!]!
+    chefKissCount: Int!
+    comments: [Comment]
   }
 
   type Auth {
-    token: ID
-    user: User
+    token: ID!
+    user: User!
   }
 
-  input ProductInput {
-    _id: ID
-    purchaseQuantity: Int
-    name: String
-    image: String
-    price: Float
-    quantity: Int
+  input RecipeInput {
+    title: String!
+    description: String
+    ingredients: [String!]!
+    instructions: String!
+    photoUrl: String
+    categoryId: ID
   }
+
 
   type Query {
-    categories: [Category]
-    products(category: ID, name: String): [Product]
-    product(_id: ID!): Product
-    user: User
-    order(_id: ID!): Order
-    checkout(products: [ProductInput]): Checkout
+    categories: [Category!]!
+    recipes(category: ID, name: String): [Recipe!]!
+    recipe(_id: ID!): Recipe
+    user(_id: ID!): User
+    comments(recipeId: ID!): [Comment!]! 
+    recipe(_id: ID!): Recipe
+    searchRecipes(query: String!): [Recipe!]!  
+  
   }
 
   type Mutation {
     addUser(firstName: String!, lastName: String!, email: String!, password: String!): Auth
-    addOrder(products: [ID]!): Order
-    updateUser(firstName: String, lastName: String, email: String, password: String): User
-    updateProduct(_id: ID!, quantity: Int!): Product
     login(email: String!, password: String!): Auth
+    submitRecipe(input: RecipeInput!): Recipe!
+    addComment(recipeId: ID!, content: String!): Comment!
+    giveChefKiss(recipeId: ID!, userId: ID!): Recipe!
+    updateRecipe(_id: ID!, title: String, description: String, ingredients: [String], instructions: String, photoUrl: String): Recipe
+    updateUser(firstName: String, lastName: String, email: String, password: String, bio: String): User
   }
 `;
 
