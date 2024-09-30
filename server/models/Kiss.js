@@ -18,7 +18,7 @@ const chefsKissSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('ChefsKiss', chefsKissSchema);
+module.exports = mongoose.model('Kiss', chefsKissSchema);
 
 
 
