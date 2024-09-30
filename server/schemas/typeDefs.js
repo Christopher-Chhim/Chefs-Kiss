@@ -10,7 +10,7 @@ const typeDefs = gql`
     _id: ID!
     title: String!
     description: String
-    ingredients: [String!]!
+    ingredients: [String]!
     instructions: String!
     photoUrl: String
     chefKissCount: Int!
@@ -32,8 +32,8 @@ const typeDefs = gql`
     firstName: String!
     lastName: String!
     email: String!
-    favourites: 
-    submittedRecipes: [Recipe!]!
+    favourites: String!
+    submittedRecipes: [Recipe]!
     chefKissCount: Int!
     comments: [Comment]
   }
@@ -46,7 +46,7 @@ const typeDefs = gql`
   input RecipeInput {
     title: String!
     description: String
-    ingredients: [String!]!
+    ingredients: [String]!
     instructions: String!
     photoUrl: String
     categoryId: ID
@@ -54,13 +54,12 @@ const typeDefs = gql`
 
 
   type Query {
-    categories: [Category!]!
-    recipes(category: ID, name: String): [Recipe!]!
+    categories: [Category]!
+    recipes(category: ID, name: String): [Recipe]!
     recipe(_id: ID!): Recipe
     user(_id: ID!): User
-    comments(recipeId: ID!): [Comment!]! 
-    recipe(_id: ID!): Recipe
-    searchRecipes(query: String!): [Recipe!]!  
+    comments(recipeId: ID!): [Comment]! 
+    searchRecipes(query: String!): [Recipe]!  
   
   }
 
