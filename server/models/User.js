@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const recipeSchema = require('./Recipe');
+const commentSchema = require('./Comment');
 
 const { Schema } = mongoose;
 
@@ -15,7 +17,7 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true, // Email should be unique, but first/last name shouldn't
+        unique: true,
     },
     password: {
         type: String,
@@ -33,7 +35,7 @@ const userSchema = new Schema({
         default: Date.now
     },
     recipes: [recipeSchema],
-    
+    comments: [commentSchema],
 });
 
 // Middleware to hash the password before saving
