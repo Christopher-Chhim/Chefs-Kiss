@@ -16,9 +16,6 @@ export default function Nav() {
                 <Link key={2} className="nav-link text-light" to="/feed">
                     My feed
                 </Link>,
-                <Link key={2} className="nav-link text-light" to="/search">
-                    Search
-                </Link>,
                 <Link key={2} className="nav-link text-light" to="/post">
                     New Post
                 </Link>,
