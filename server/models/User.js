@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+
 const bcrypt = require('bcrypt');
-const recipeSchema = require('./Recipe');
+const Recipe = require('./Recipe');
 const commentSchema = require('./Comment');
 
 const { Schema } = mongoose;
@@ -34,7 +35,10 @@ const userSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    recipes: [recipeSchema],
+    recipes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Recipe', 
+    }],
     comments: [commentSchema],
 });
 

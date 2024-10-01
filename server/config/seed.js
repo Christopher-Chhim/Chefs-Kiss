@@ -7,8 +7,8 @@ const cleanDB = require('./cleanDB');
 db.once('open', async () => {
   try {
     // Clean existing data
-    await cleanDB('ChefsKiss', 'chefsKisses');
-    await cleanDB('Comment', 'comments');
+    // await cleanDB('ChefsKiss', 'chefsKisses');
+    // await cleanDB('Comment', 'comments');
     await cleanDB('Recipe', 'recipes');
     await cleanDB('User', 'users');
 
@@ -20,7 +20,7 @@ db.once('open', async () => {
       const recipeData = recipeSeeds[i];
 
       // Find the user who created the recipe
-      const creator = users.find(user => user.username === recipeData.creatorUsername);
+      const creator = users.find(user => user.email === recipeData.creator);
 
       if (creator) {
         const recipe = await Recipe.create({
