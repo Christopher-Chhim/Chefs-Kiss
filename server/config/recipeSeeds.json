@@ -1,0 +1,93 @@
+[
+    { "title": "Chocolate chip cookies", 
+      "ingredients":[ 
+      "2 ¼ cups all-purpose flour", 
+      "1 teaspoon baking soda", 
+      "1 teaspoon salt", 
+      "1 cup (2 sticks) unsalted butter softened", 
+      "¾ cup granulated sugar", 
+      "¾ cup packed brown sugar", 
+      "1 teaspoon vanilla extract", 
+      "2 large eggs", 
+      "2 cups semi-sweet chocolate chips", 
+      "Optional: 1 cup chopped nuts (e.g., walnuts or pecans)"
+      ],
+      "instructions":[ 
+      "Preheat your oven to 375°F (190°C).",
+      "In a medium bowl combine",
+      "2 ¼ cups flour", 
+      "1 teaspoon baking soda", 
+      "and 1 teaspoon salt.", 
+      "Set this mixture aside.", 
+      "In a large mixing bowl", 
+      "beat 1 cup of softened butter", 
+      "¾ cup granulated sugar", 
+      "¾ cup brown sugar", 
+      "and 1 teaspoon vanilla extract until the mixture is creamy and well-blended.",
+      "Add the eggs, one at a time, beating well after each addition.",
+      "Gradually add the flour mixture to the wet ingredients, mixing slowly until fully combined.",
+      "Stir in the chocolate chips (and nuts, if desired) using a spatula or spoon.", 
+      "Drop rounded tablespoons of cookie dough onto an ungreased baking sheet", 
+      "leaving about 2 inches between each cookie to allow for spreading.", 
+      "Bake: Bake the cookies for 9-11 minutes or until they are golden brown around the edges.",
+      "Let the cookies cool on the baking sheet for 2 minutes, then transfer them to a wire rack to cool completely."
+    ],
+      "image":
+      "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/62298.jpg",
+      "creator": "brianagil@gmail.com",
+      "comments": []
+    },
+    {
+      "title": "Fried rice",
+      "ingredients":[
+      "2 to 3 cups of cooked rice", 
+      "2 tablespoons of oil", 
+      "2 large eggs", 
+      "2 to 3 tablespoons of soy sauce", 
+      "1 to 1 ½ cups of diced vegetables", 
+      "2 cloves of minced garlic", 
+      "2 to 3 stalks of chopped green onions", 
+      "Salt and pepper."
+      ],
+      "instructions":[
+      "Ensure the rice is cold and separated.", 
+      "If using protein, cook it separately and set aside.",
+      "Scramble the eggs in a hot pan with a little oil, then set them aside.", 
+      "Sauté garlic, onions, and vegetables in oil until tender.", 
+      "Add the cold rice and stir-fry it with the veggies.", 
+      "Add soy sauce, oyster sauce (optional), and other seasonings.", 
+      "Stir until evenly coated.", 
+      "Mix in the cooked protein and scrambled eggs.", 
+      "Garnish with chopped green onions and serve hot."
+      ],
+      "image":
+      "https://therecipecritic.com/wp-content/uploads/2019/07/easy_fried_rice-1-500x500.jpg",
+      "creator": "christopher.chhim123@gmail.com",
+      "comments": []
+    },
+    {
+      "title": "Greek salad",
+      "ingredients":[ 
+      "2 to 3 medium tomatoes", 
+      "1 large cucumber", 
+      "½ medium thinly sliced red onions", 
+      "1 medium green bell pepper", 
+      "½ cup kalamata olives", 
+      "1 block of feta cheese", 
+      "3-4 tablespoons of extra virgin olive oil", 
+      "1 teaspoon of dried oregano", 
+      "1-2 tablespoons of red wine vinegar", 
+      "Salt and pepper."
+    ],
+      "instructions":[
+      "Chop the tomatoes, cucumbers, and bell pepper, and slice the onions thinly",
+      "In a large bowl, combine the chopped vegetables, olives, and feta cheese.", 
+      "Drizzle olive oil, red wine vinegar (or lemon juice)",
+      "Sprinkle dried oregano, salt, and pepper over the salad" ,
+      "Gently toss the salad to mix the ingredients without breaking up the feta too much."
+      ],
+      "images": "https://www.tamingtwins.com/wp-content/uploads/2024/07/greek-salad-9.jpg",
+      "creator": "sofiyakamiski@gmail.com",
+      "comments": []
+    }
+]

@@ -11,10 +11,10 @@ const recipeSchema = new Schema({
         type: String,
         required: true,
     }],
-    instructions: {
+    instructions: [{
         type: String, 
         required: true,
-    },
+    }],
     image: {
         type: String,
     },
@@ -23,10 +23,6 @@ const recipeSchema = new Schema({
         ref: 'User',
         required: true,
     },
-    votes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vote',
-    }],
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment', 

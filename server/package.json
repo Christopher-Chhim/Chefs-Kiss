@@ -4,9 +4,9 @@
     "description": "",
     "main": "server.js",
     "scripts": {
-        "start": "node server.js",
-        "watch": "nodemon",
-        "seed": "node config/seeds.js"
+      "start": "node server.js",
+      "watch": "nodemon",
+      "seed": "node config/seed.js"
     },
     "keywords": [],
     "author": "",
@@ -24,4 +24,6 @@
     "devDependencies": {
         "nodemon": "^2.0.2"
     }
-}
+  }
+
+	
