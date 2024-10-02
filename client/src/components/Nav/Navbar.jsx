@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+//import '../../styles/Navbar.css';
 
 // Define the Navbar component
 export default function Navbar({ links }) {

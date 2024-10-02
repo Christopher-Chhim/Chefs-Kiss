@@ -1,3 +1,5 @@
+import '../../styles/RecipeCard.css';
+
 const RecipeCard = ({ recipe, onKiss }) => {
   return (
     <div className="card">
