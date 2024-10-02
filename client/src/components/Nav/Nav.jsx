@@ -46,9 +46,7 @@ export default function Nav() {
                         <Link key={4} className="nav-link text-light" to="/profile">
                             My Profile
                         </Link>,
-                        <Link key={5} className="nav-link text-light" to="/feed">
-                            My feed
-                        </Link>,
+    
                         
                         <Link key={6} className="nav-link text-light" to="/post">
                             New Post
