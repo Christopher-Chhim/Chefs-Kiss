@@ -12,26 +12,16 @@ export const LOGIN = gql`
 `;
 
 export const POST_RECIPE = gql`
-  mutation postRecipe($recipes: [ID]!) {
-    postRecipe(recipes: $recipes) {
+  mutation postRecipe($title: String!, $ingredients: String!, $instructions: String!, $description: String!) {
+    postRecipe(title: $title, ingredients: $ingredients, instructions: $instructions, description: $description) {
       _id
       title
       ingredients
       instructions
-      image
-      creator {
-        username
-      }
-      comments {
+      description
       user {
-        username
+        _id
       }
-      text
-      createdAt
-    }
-    kisses {
-    createdAt
-    }
     }
   }
 `;

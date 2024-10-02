@@ -1,4 +1,4 @@
-import { RecipeForm } from '../components/Recipe';
+import RecipeForm from '../components/Recipe/RecipeForm.jsx';
 
 export default function Post() {
     return (

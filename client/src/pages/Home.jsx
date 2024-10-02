@@ -1,5 +1,5 @@
-import Nav from '../components/Nav';
-import RecipeList from '../components/Recipe';
+import Nav from '../components/Nav/Nav';
+import RecipeList from '../components/Recipe/RecipeList';
 
 const Home = () => {
   
@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <main>
         <div >
-          <Nav />
+          {/* <Nav /> */}
           <RecipeList />
         </div>
        

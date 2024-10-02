@@ -10,10 +10,10 @@ const typeDefs = gql`
     _id: ID!
     title: String!
     description: String
-    ingredients: [String]!
+    ingredients: String!
     instructions: String!
     photoUrl: String
-    chefKissCount: Int!
+    chefKissCount: Int
     category: Category
     user: User!
     createdAt: String!
@@ -29,12 +29,12 @@ const typeDefs = gql`
 
   type User {
     _id: ID!
-    firstName: String!
-    lastName: String!
-    email: String!
-    favourites: String!
-    submittedRecipes: [Recipe]!
-    chefKissCount: Int!
+    firstName: String
+    lastName: String
+    email: String
+    favourites: [Recipe]
+    submittedRecipes: [Recipe]
+    chefKissCount: Int
     comments: [Comment]
   }
 
@@ -46,10 +46,8 @@ const typeDefs = gql`
   input RecipeInput {
     title: String!
     description: String
-    ingredients: [String]!
+    ingredients: String!
     instructions: String!
-    photoUrl: String
-    categoryId: ID
   }
 
 
@@ -60,13 +58,13 @@ const typeDefs = gql`
     user(_id: ID!): User
     comments(recipeId: ID!): [Comment]! 
     searchRecipes(query: String!): [Recipe]!  
-  
+    getUser: User!
   }
 
   type Mutation {
     addUser(firstName: String!, lastName: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
-    submitRecipe(input: RecipeInput!): Recipe!
+    postRecipe(title: String!, ingredients: String!, instructions: String!, description: String!): Recipe!
     addComment(recipeId: ID!, content: String!): Comment!
     giveChefKiss(recipeId: ID!, userId: ID!): Recipe!
     updateRecipe(_id: ID!, title: String, description: String, ingredients: [String], instructions: String, photoUrl: String): Recipe
