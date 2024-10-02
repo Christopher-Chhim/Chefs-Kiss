@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const Recipe = require('./Recipe');
 const commentSchema = require('./Comment');
 
