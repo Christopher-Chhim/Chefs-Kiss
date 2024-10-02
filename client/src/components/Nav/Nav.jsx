@@ -1,9 +1,8 @@
-
 import { Link } from 'react-router-dom';
-import Navbar from './UI/Navbar';
+import Navbar from './Navbar'; // Make sure the path is correct
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Nav() {
-    
     return (
         <Navbar
             links={[
@@ -13,16 +12,16 @@ export default function Nav() {
                 <Link key={2} className="nav-link text-light" to="/profile">
                     My Profile
                 </Link>,
-                <Link key={2} className="nav-link text-light" to="/feed">
+                <Link key={3} className="nav-link text-light" to="/feed">
                     My feed
                 </Link>,
-                <Link key={2} className="nav-link text-light" to="/post">
+                <Link key={4} className="nav-link text-light" to="/post">
                     New Post
                 </Link>,
-                <Link key={2} className="nav-link text-light" to="/signin">
+                <Link key={5} className="nav-link text-light" to="/signin">
                     Sign In
                 </Link>,
-                <Link key={2} className="nav-link text-light" to="/logout">
+                <Link key={6} className="nav-link text-light" to="/logout">
                     Log Out
                 </Link>,
             ]}

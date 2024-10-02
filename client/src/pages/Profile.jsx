@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { gql } from '@apollo/client';
-import Recipe from '../components/Recipe';
-import Nav from '../components/Nav';  
+// import Recipe from '../components/Recipe/RecipeList';
+import Nav from '../components/Nav/Nav';  
 
 
 const GET_USER_RECIPES = gql`
@@ -56,7 +56,7 @@ const Profile = ({ userId }) => {
   return (
     <div>
       {/* NavBar */}
-      <Nav />
+      {/* <Nav /> */}
 
       {/* Profile Header */}
       <h1>{data.user.firstName}'s Profile</h1>
@@ -97,7 +97,8 @@ const Profile = ({ userId }) => {
             <h2>Your Submitted Recipes</h2>
             {submittedRecipes.length > 0 ? (
               submittedRecipes.map((recipe) => (
-                <Recipe key={recipe._id} recipe={recipe} userId={userId} />
+                // <Recipe key={recipe._id} recipe={recipe} userId={userId} />
+                <h2>test</h2>
               ))
             ) : (
               <p>You have not submitted any recipes yet.</p>
