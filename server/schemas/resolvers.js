@@ -13,7 +13,27 @@ const resolvers = {
         throw new Error('Error fetching categories');
       }
     },
+    getUser: async (parent, args, context) => {
+      // Check if the user is authenticated
+      console.log(context)
+      if (!context.user) {
+        throw new Error('You must be logged in to access this resource');
+      }
 
+      try {
+        // Fetch the user by ID from the context
+        const user = await User.findById(context.user._id).populate('submittedRecipes');
+        console.log(user)
+        if (!user) {
+          console.log("ERR")
+          throw new Error('User not found');
+        }
+
+        return user;
+      } catch (err) {
+        throw new Error('Error fetching user: ' + err.message);
+      }
+    },
    
     recipes: async (parent, { category, name }) => {
       const query = {};
@@ -74,64 +94,65 @@ const resolvers = {
     
     addUser: async (parent, { firstName, lastName, email, password }) => {
       try {
-    
-        const hashedPassword = await bcrypt.hash(password, 10);
-
         
         const newUser = await User.create({
           firstName,
           lastName,
           email,
-          password: hashedPassword,
+          password: password,
         });
-
-      
-        const token = jwt.sign({ _id: newUser._id }, 'your_secret_key');
-
+    
+        const token = jwt.sign({ _id: newUser._id }, 'mysecretssshhhhhhh');
+    
         return { token, user: newUser };
       } catch (err) {
         throw new Error('Error creating the user');
       }
     },
-
-   
+    
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
-
+    
       if (!user) {
         throw new Error('No user found with this email');
       }
-
-      const validPassword = await bcrypt.compare(password, user.password);
-
+    
+      // Trim and log the password
+      const trimmedPassword = password.trim();
+      console.log('User found:', user);
+      console.log('Password from DB:', user.password);
+      console.log('Plaintext password for comparison:', trimmedPassword); // Debugging line
+    
+      const validPassword = await bcrypt.compare(trimmedPassword, user.password);
+    
       if (!validPassword) {
         throw new Error('Incorrect password');
       }
-
-      const token = jwt.sign({ _id: user._id }, 'your_secret_key');
-
+    
+      const token = jwt.sign({ _id: user._id }, 'mysecretssshhhhhhh');
+    
       return { token, user };
     },
+    
 
   
-    submitRecipe: async (parent, { input }, { user }) => {
-      if (!user) {
+    postRecipe: async (parent, { title, ingredients, instructions, description }, context ) => {
+      if (!context.user) {
         throw new Error('You must be logged in to submit a recipe');
       }
 
       try {
         const newRecipe = await Recipe.create({
-          title: input.title,
-          description: input.description,
-          ingredients: input.ingredients,
-          instructions: input.instructions,
-          photoUrl: input.photoUrl,
-          category: input.categoryId,
-          user: user._id,
+          title,
+          description,
+          ingredients,
+          instructions,
+          user: context.user._id,
           createdAt: new Date(),
         });
+        console.log(newRecipe)
 
-        await User.findByIdAndUpdate(user._id, { $push: { submittedRecipes: newRecipe._id } });
+        await User.findByIdAndUpdate(context.user._id, { $push: { submittedRecipes: newRecipe._id } });
 
         return newRecipe;
       } catch (err) {

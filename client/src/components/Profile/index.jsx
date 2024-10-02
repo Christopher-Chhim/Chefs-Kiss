@@ -4,42 +4,23 @@ import { gql } from '@apollo/client';
 import Recipe from '../components/Recipe'; 
 
 const GET_USER_RECIPES = gql`
-  query getUser($userId: ID!) {
-    user(_id: $userId) {
+  query getUserRecipes($user: ID){
+    getUserRecipes(user: $user) {
       _id
-      firstName
-      lastName
-      favourites {
-        _id
-        title
-        photoUrl
-        chefKissCount
-        ingredients
-        instructions
-        user {
-          firstName
-          lastName
-        }
-      }
-      submittedRecipes {
-        _id
-        title
-        photoUrl
-        chefKissCount
-        ingredients
-        instructions
-        user {
-          firstName
-          lastName
-        }
-      }
+      title
+      description
+      ingredients
+      instructions
+      createdAt
+      # You can add more fields here if your Recipe type has them, e.g.:
+      image
     }
   }
 `;
 
 const Profile = ({ userId }) => {
   const { data, loading, error } = useQuery(GET_USER_RECIPES, {
-    variables: { userId },
+    // variables: { userId },
   });
 
   if (loading) return <p>Loading...</p>;

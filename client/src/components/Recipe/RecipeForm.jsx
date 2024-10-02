@@ -1,16 +1,29 @@
 import React, { useState } from 'react';
+import { POST_RECIPE } from '../../utils/mutations';
+import { useMutation } from '@apollo/client';
 
 const RecipeForm = ({ initialValues = {}, onSubmit }) => {
   const [formValues, setFormValues] = useState(initialValues);
+  const [addRecipe] = useMutation(POST_RECIPE);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formValues);
+    console.log(formValues)
+    const postResponse = await addRecipe({
+      variables: {
+        title: formValues.title,
+        description: formValues.description,
+        ingredients: formValues.ingredients,
+        instructions: formValues.instructions
+      }
+    });
+    console.log(postResponse)
+    window.location.assign('/profile');
   };
 
   return (

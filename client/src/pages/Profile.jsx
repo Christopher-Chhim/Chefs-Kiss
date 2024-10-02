@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { gql } from '@apollo/client';
-// import Recipe from '../components/Recipe/RecipeList';
-import Nav from '../components/Nav/Nav';  
-
+import RecipeCard from '../components/Recipe/RecipeCard';
+import Nav from '../components/Nav/Nav';
 
 const GET_USER_RECIPES = gql`
-  query getUser($userId: ID!) {
-    user(_id: $userId) {
+  query {
+    getUser {
       _id
       firstName
       lastName
+      email
       favourites {
         _id
         title
@@ -48,18 +48,21 @@ const Profile = ({ userId }) => {
     variables: { userId },
   });
 
+  // Handling the loading state
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading user data.</p>;
 
-  const { favourites, submittedRecipes } = data.user;
-
+  // Destructure user object and set defaults for `favourites` and `submittedRecipes`
+  var { favourites = [], submittedRecipes = [] } = data?.getUser || {};
+  if(!favourites)
+    favourites = []
   return (
     <div>
       {/* NavBar */}
       {/* <Nav /> */}
 
       {/* Profile Header */}
-      <h1>{data.user.firstName}'s Profile</h1>
+      <h1>{data?.getUser?.firstName}'s Profile</h1>
 
       {/* Tabbed Navigation to Switch Between "Favourites" and "Submitted Recipes" */}
       <div className="tabs">
@@ -97,8 +100,8 @@ const Profile = ({ userId }) => {
             <h2>Your Submitted Recipes</h2>
             {submittedRecipes.length > 0 ? (
               submittedRecipes.map((recipe) => (
-                // <Recipe key={recipe._id} recipe={recipe} userId={userId} />
-                <h2>test</h2>
+                // Replace `test` with your actual Recipe component
+                <RecipeCard key={recipe._id} recipe={recipe} userId={userId} />
               ))
             ) : (
               <p>You have not submitted any recipes yet.</p>

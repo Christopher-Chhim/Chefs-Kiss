@@ -4,7 +4,7 @@ const RecipeDetail = ({ recipeId, onVote, comments, onAddComment }) => {
   const [recipe, setRecipe] = useState(null);
 
   useEffect(() => {
-    // Fetch recipe details by recipeId
+    
     fetch(`/api/recipes/${recipeId}`)
       .then((res) => res.json())
       .then((data) => setRecipe(data));
