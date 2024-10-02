@@ -1,4 +1,4 @@
-const db = require('../config/connection');
+const db = require('./connection');
 const { User, Recipe, ChefsKiss, Comment } = require('../models');
 const userSeeds = require('./userSeeds.json');
 const recipeSeeds = require('./recipeSeeds.json');
