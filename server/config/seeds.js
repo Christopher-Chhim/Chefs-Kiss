@@ -25,7 +25,7 @@ db.once('open', async () => {
       if (creator) {
         const recipe = await Recipe.create({
           ...recipeData,
-          creator: creator._id
+          user: creator._id
         });
 
         // Optionally, update user's list of recipes
